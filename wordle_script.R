@@ -1,5 +1,5 @@
 
-# Setup ----
+### Setup ----
 library(tidyverse)
 lengthen_words <- function(word_df) {
   word_df %>%
@@ -18,6 +18,8 @@ update_remaining_words <- function(guess_word, pattern_found) {
     print("incorrect input")
     return(remaining_words)
   }
+  
+  guess_word <- str_to_lower(guess_word)
   
   lengthen_words(remaining_words) %>%
     inner_join(
@@ -83,27 +85,32 @@ words <- read.delim("wordle-answers-alphabetical.txt", header=FALSE) %>%
 
 remaining_words <- words
 
-# Play ----
+### Play ----
+# 1 = green
+# 2 = yellow
+# 3 = grey
+# For example, a pattern of green-yellow-grey-grey-grey would be entered as 12333
+
 # 1
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
 
 # 2
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
 
 # 3
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
 
 # 4
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
 
 # 5
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
 
 # 6
 get_best()
-remaining_words <- update_remaining_words("", "")
+remaining_words <- update_remaining_words(guess_word="", pattern_found="")
