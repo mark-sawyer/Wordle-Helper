@@ -1,0 +1,11 @@
+"","guess","expectation","max","remaining"
+"1","empty",1,1,TRUE
+"2","musty",1,1,TRUE
+"3","pygmy",1,1,TRUE
+"4","smote",1,1,TRUE
+"5","sport",1,1,TRUE
+"6","spout",1,1,TRUE
+"7","stamp",1,1,TRUE
+"8","stomp",1,1,TRUE
+"9","stoop",1,1,TRUE
+"10","storm",1,1,TRUE

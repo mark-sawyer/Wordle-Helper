@@ -1,0 +1,11 @@
+"","guess","expectation","max","remaining"
+"1","empty",3.64285714285714,7,TRUE
+"2","glyph",4.28571428571429,9,TRUE
+"3","aptly",4.5,9,TRUE
+"4","light",4.64285714285714,8,TRUE
+"5","lymph",4.78571428571429,10,TRUE
+"6","pithy",5,10,TRUE
+"7","petal",5.5,10,TRUE
+"8","hotly",5.64285714285714,11,TRUE
+"9","pygmy",5.64285714285714,11,TRUE
+"10","tulip",5.64285714285714,10,TRUE

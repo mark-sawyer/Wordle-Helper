@@ -20,6 +20,9 @@ update_remaining_words <- function(guess_word, pattern_found) {
   }
   
   guess_word <- str_to_lower(guess_word)
+  guesses_so_far <<- guesses_so_far + 1L
+  last_guess <<- guess_word
+  last_pattern <<- pattern_found
   
   lengthen_words(remaining_words) %>%
     inner_join(
@@ -42,13 +45,21 @@ update_remaining_words <- function(guess_word, pattern_found) {
     select(-pattern)
 }
 get_best <- function() {
-  if (pull(count(words)) == pull(count(remaining_words))) {
+  if (pull(count(words)) == pull(count(remaining_words)))
+  {
     return(
       read.csv("get_best_first_turn.csv") %>%
         as_tibble() %>%
         select(-X) %>%
         mutate(remaining=TRUE) %>%
         filter(row_number() <= 10)
+    )
+  } else if (guesses_so_far == 1L & last_guess == "raise")
+  {
+    return(
+      read.csv(str_c("Best After RAISE//", last_pattern, ".csv")) %>%
+        as_tibble() %>%
+        select(-X)
     )
   }
   
@@ -71,7 +82,7 @@ get_best <- function() {
     summarise(n=n()) %>%
     mutate(prob=n / sum(n)) %>%
     summarise(
-      expectation=sum(n * prob),
+      expectation=sum(prob * n),
       max=max(n)
     ) %>%
     mutate(remaining=guess %in% remaining_words[["word"]]) %>%
@@ -84,6 +95,10 @@ words <- read.delim("wordle-answers-alphabetical.txt", header=FALSE) %>%
   rename(word="V1")
 
 remaining_words <- words
+
+guesses_so_far <- 0L
+last_guess <<- ""
+last_pattern <- ""
 
 ### Play ----
 # 1 = green
