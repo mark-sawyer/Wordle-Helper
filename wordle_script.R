@@ -51,8 +51,9 @@ get_best <- function() {
       read.csv("get_best_first_turn.csv") %>%
         as_tibble() %>%
         select(-X) %>%
-        mutate(remaining=TRUE) %>%
-        filter(row_number() <= 10)
+        filter(row_number() <= 10) %>%
+        mutate(max_remain=round(2315 / (2^min)) %>% as.integer()) %>%
+        select(guess, expectation, min, max_remain, remaining)
     )
   } else if (guesses_so_far == 1L & last_guess == "raise")
   {
@@ -80,13 +81,17 @@ get_best <- function() {
     summarise(pattern=str_c(outcome, collapse="")) %>%
     group_by(guess, pattern) %>%
     summarise(n=n()) %>%
-    mutate(prob=n / sum(n)) %>%
+    mutate(
+      prob=n / sum(n),
+      entropy=log2(1 / prob)
+    ) %>%
     summarise(
-      expectation=sum(prob * n),
-      max=max(n)
+      expectation=sum(prob * entropy),
+      min=min(entropy),
+      max_remain=max(n)
     ) %>%
     mutate(remaining=guess %in% remaining_words[["word"]]) %>%
-    arrange(expectation, desc(remaining)) %>%
+    arrange(desc(expectation), desc(remaining)) %>%
     filter(row_number() <= 10)
 }
 
@@ -108,7 +113,7 @@ last_pattern <- ""
 
 # 1
 get_best()
-remaining_words <- update_remaining_words(guess_word="", pattern_found="")
+remaining_words <- update_remaining_words(guess_word="raise", pattern_found="")
 
 # 2
 get_best()
